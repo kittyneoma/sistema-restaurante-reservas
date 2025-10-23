@@ -4,25 +4,39 @@ require('dotenv').config();
 
 const app = express();
 
-// middlewares
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// rutas de prueba
+// Importar configuración de BD
+require('./config/database');
+
+// Health check
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK',
-    message: 'Server is running',
+    message: '✅ Server is running',
     timestamp: new Date().toISOString()
   });
 });
 
-// Importar rutas (las crearemos después)
-// const authRoutes = require('./routes/authRoutes');
-// app.use('/api/auth', authRoutes);
+// Importar rutas
+const authRoutes = require('./routes/authRoutes');
 
+// Usar rutas
+app.use('/api/auth', authRoutes);
+
+// Puerto
 const PORT = process.env.PORT || 5000;
 
+// Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`\n🚀 Server running on http://localhost:${PORT}`);
+  console.log(`\n📝 API Endpoints:`);
+  console.log(`   GET  /api/health`);
+  console.log(`   POST /api/auth/register`);
+  console.log(`   POST /api/auth/login`);
+  console.log(`   GET  /api/auth/profile\n`);
 });
+
+module.exports = app;
