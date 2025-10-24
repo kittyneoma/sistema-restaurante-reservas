@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
   try {
-    // obtiene token del header
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -13,10 +12,8 @@ const authMiddleware = (req, res, next) => {
 
     const token = authHeader.substring(7);
 
-    // verifica token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // agrega informacion del usuario al request
     req.user = decoded;
 
     next();
