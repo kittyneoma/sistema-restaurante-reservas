@@ -25,12 +25,14 @@ const authRoutes = require('./routes/authRoutes');
 const restaurantRoutes = require('./routes/restaurantRoutes');
 const tableRoutes = require('./routes/tableRoutes');
 const menuRoutes = require('./routes/menuRoutes');
+const reservationRoutes = require('./routes/reservationRoutes');
 
 // usa rutas
 app.use('/api/auth', authRoutes);
 app.use('/api/restaurants', restaurantRoutes);
 app.use('/api/tables', tableRoutes);
 app.use('/api/menu', menuRoutes); 
+app.use('/api/reservations', reservationRoutes);
 
 // puerto
 const PORT = process.env.PORT || 5000;
@@ -61,6 +63,14 @@ app.listen(PORT, () => {
   console.log(`   POST   /api/menu (auth)`);
   console.log(`   PUT    /api/menu/:id (auth)`);
   console.log(`   DELETE /api/menu/:id (auth)\n`);
+  console.log(`\n Reservations:`);
+console.log(`   GET    /api/reservations/availability/:restaurantId`);
+console.log(`   POST   /api/reservations (auth)`);
+console.log(`   GET    /api/reservations/my/reservations (auth)`);
+console.log(`   GET    /api/reservations/restaurant/:restaurantId (auth)`);
+console.log(`   GET    /api/reservations/:id (auth)`);
+console.log(`   PUT    /api/reservations/:id/status (auth)`);
+console.log(`   PUT    /api/reservations/:id/cancel (auth)\n`);
 });
 
 module.exports = app;
