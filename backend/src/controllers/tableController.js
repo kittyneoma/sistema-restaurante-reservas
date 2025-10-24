@@ -1,14 +1,13 @@
 const TableModel = require('../models/TableModelClass');
 const Restaurant = require('../models/Restaurant');
 
-// crea mesa
 const createTable = async (req, res) => {
   try {
     const { restaurantId, tableNumber, capacity } = req.body;
 
     if (!restaurantId || !tableNumber || !capacity) {
       return res.status(400).json({
-        error: 'ID de restaurante, número de mesa y capacidad son requeridos'
+        error: 'ID de restaurante, numero de mesa y capacidad son requeridos'
       });
     }
 
@@ -18,7 +17,6 @@ const createTable = async (req, res) => {
       });
     }
 
-    // verifica que el usuario sea dueño del restaurante
     const isOwner = await Restaurant.isOwner(restaurantId, req.user.id);
     if (!isOwner) {
       return res.status(403).json({
@@ -39,7 +37,7 @@ const createTable = async (req, res) => {
     
     if (error.code === '23505') {
       return res.status(400).json({
-        error: 'Ya existe una mesa con ese número en este restaurante'
+        error: 'Ya existe una mesa con ese numero en este restaurante'
       });
     }
 
@@ -50,7 +48,6 @@ const createTable = async (req, res) => {
   }
 };
 
-// obtiene mesas de un restaurante
 const getTablesByRestaurant = async (req, res) => {
   try {
     const { restaurantId } = req.params;
@@ -71,7 +68,6 @@ const getTablesByRestaurant = async (req, res) => {
   }
 };
 
-// obtiene mesa por ID
 const getTableById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -95,7 +91,6 @@ const getTableById = async (req, res) => {
   }
 };
 
-// actualiza mesa
 const updateTable = async (req, res) => {
   try {
     const { id } = req.params;
