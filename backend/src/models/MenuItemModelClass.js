@@ -1,7 +1,6 @@
 const pool = require('../config/database');
 
 class MenuItem {
-  // Crear un item del menú
   static async create(menuItemData) {
     const { restaurantId, name, description, category, price, imageUrl } = menuItemData;
 
@@ -22,7 +21,6 @@ class MenuItem {
     }
   }
 
-  // Obtener items del menú por restaurante
   static async findByRestaurantId(restaurantId, filters = {}) {
     let query = `
       SELECT * FROM menu_items 
@@ -31,7 +29,6 @@ class MenuItem {
     const params = [restaurantId];
     let paramCount = 2;
 
-    // Filtro por categoría
     if (filters.category) {
       query += ` AND LOWER(category) = LOWER($${paramCount})`;
       params.push(filters.category);
@@ -49,7 +46,6 @@ class MenuItem {
     }
   }
 
-  // Obtener item por ID
   static async findById(id) {
     const query = 'SELECT * FROM menu_items WHERE id = $1';
 
@@ -62,7 +58,6 @@ class MenuItem {
     }
   }
 
-  // Actualizar item del menú
   static async update(id, menuItemData) {
     const { name, description, category, price, imageUrl, isAvailable } = menuItemData;
 
@@ -91,7 +86,6 @@ class MenuItem {
     }
   }
 
-  // Eliminar item del menú (soft delete)
   static async delete(id) {
     const query = 'UPDATE menu_items SET is_available = false WHERE id = $1 RETURNING *';
 
@@ -104,7 +98,6 @@ class MenuItem {
     }
   }
 
-  // Obtener categorías de un restaurante
   static async getCategories(restaurantId) {
     const query = `
       SELECT DISTINCT category 
