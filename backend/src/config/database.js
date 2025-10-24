@@ -8,7 +8,7 @@ const pool = new Pool({
   }
 });
 
-// prueba de conexión
+// prueba de conexion
 pool.connect((err, client, release) => {
   if (err) {
     console.error('Error connecting to database:', err.stack);
