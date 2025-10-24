@@ -1,20 +1,13 @@
 const MenuItemModel = require('../models/MenuItemModelClass');
 const Restaurant = require('../models/Restaurant');
 
-console.log('--- DIAGNÓSTICO DE MODELO ---');
-console.log('Tipo de MenuItemModel:', typeof MenuItemModel); 
-console.log('Propiedades de MenuItemModel:', Object.getOwnPropertyNames(MenuItemModel)); 
-console.log('--- FIN DIAGNÓSTICO ---');
-
-// Crear item del menú
 const createMenuItem = async (req, res) => {
   try {
     const { restaurantId, name, description, category, price, imageUrl } = req.body;
 
-    // Validaciones
     if (!restaurantId || !name || !category || !price) {
       return res.status(400).json({
-        error: 'ID de restaurante, nombre, categoría y precio son requeridos'
+        error: 'ID de restaurante, nombre, categoria y precio son requeridos'
       });
     }
 
@@ -24,11 +17,10 @@ const createMenuItem = async (req, res) => {
       });
     }
 
-    // Verificar que el usuario sea dueño del restaurante
     const isOwner = await Restaurant.isOwner(restaurantId, req.user.id);
     if (!isOwner) {
       return res.status(403).json({
-        error: 'No tienes permiso para agregar items al menú de este restaurante'
+        error: 'No tienes permiso para agregar items al menu de este restaurante'
       });
     }
 
@@ -36,20 +28,19 @@ const createMenuItem = async (req, res) => {
     const newMenuItem = await MenuItemModel.create(menuItemData);
 
     res.status(201).json({
-      message: 'Item del menú creado exitosamente',
+      message: 'Item del menu creado exitosamente',
       menuItem: newMenuItem
     });
 
   } catch (error) {
-    console.error('Error al crear item del menú:', error);
+    console.error('Error al crear item del menúu:', error);
     res.status(500).json({
-      error: 'Error al crear item del menú',
+      error: 'Error al crear item del menu',
       details: error.message
     });
   }
 };
 
-// Obtener menú de un restaurante
 const getMenuByRestaurant = async (req, res) => {
   try {
     const { restaurantId } = req.params;
@@ -64,15 +55,14 @@ const getMenuByRestaurant = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error al obtener menú:', error);
+    console.error('Error al obtener menu:', error);
     res.status(500).json({
-      error: 'Error al obtener menú',
+      error: 'Error al obtener menu',
       details: error.message
     });
   }
 };
 
-// Obtener categorías del menú
 const getMenuCategories = async (req, res) => {
   try {
     const { restaurantId } = req.params;
@@ -85,15 +75,14 @@ const getMenuCategories = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error al obtener categorías:', error);
+    console.error('Error al obtener categorias:', error);
     res.status(500).json({
-      error: 'Error al obtener categorías',
+      error: 'Error al obtener categorias',
       details: error.message
     });
   }
 };
 
-// Obtener item del menú por ID
 const getMenuItemById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -102,90 +91,84 @@ const getMenuItemById = async (req, res) => {
 
     if (!menuItem) {
       return res.status(404).json({
-        error: 'Item del menú no encontrado'
+        error: 'Item del menu no encontrado'
       });
     }
 
     res.json({ menuItem });
 
   } catch (error) {
-    console.error('Error al obtener item del menú:', error);
+    console.error('Error al obtener item del menu:', error);
     res.status(500).json({
-      error: 'Error al obtener item del menú',
+      error: 'Error al obtener item del menu',
       details: error.message
     });
   }
 };
 
-// Actualizar item del menú
 const updateMenuItem = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Obtener el item para verificar el restaurante
     const menuItem = await MenuItemModel.findById(id);
     if (!menuItem) {
       return res.status(404).json({
-        error: 'Item del menú no encontrado'
+        error: 'Item del menu no encontrado'
       });
     }
 
-    // Verificar que el usuario sea dueño del restaurante
     const isOwner = await Restaurant.isOwner(menuItem.restaurant_id, req.user.id);
     if (!isOwner) {
       return res.status(403).json({
-        error: 'No tienes permiso para editar este item del menú'
+        error: 'No tienes permiso para editar este item del menu'
       });
     }
 
     const updatedMenuItem = await MenuItemModel.update(id, req.body);
 
     res.json({
-      message: 'Item del menú actualizado exitosamente',
+      message: 'Item del menu actualizado exitosamente',
       menuItem: updatedMenuItem
     });
 
   } catch (error) {
-    console.error('Error al actualizar item del menú:', error);
+    console.error('Error al actualizar item del menu:', error);
     res.status(500).json({
-      error: 'Error al actualizar item del menú',
+      error: 'Error al actualizar item del menu',
       details: error.message
     });
   }
 };
 
-// Eliminar item del menú
 const deleteMenuItem = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Obtener el item para verificar el restaurante
     const menuItem = await MenuItemModel.findById(id);
     if (!menuItem) {
       return res.status(404).json({
-        error: 'Item del menú no encontrado'
+        error: 'Item del menu no encontrado'
       });
     }
 
-    // Verificar que el usuario sea dueño del restaurante
     const isOwner = await Restaurant.isOwner(menuItem.restaurant_id, req.user.id);
     if (!isOwner) {
       return res.status(403).json({
-        error: 'No tienes permiso para eliminar este item del menú'
+        error: 'No tienes permiso para eliminar este item del menu'
       });
     }
 
     const deletedMenuItem = await MenuItemModel.delete(id);
 
     res.json({
-      message: 'Item del menú eliminado exitosamente',
+      message: 'Item del menu eliminado exitosamente',
       menuItem: deletedMenuItem
     });
 
   } catch (error) {
-    console.error('Error al eliminar item del menú:', error);
+    console.error('Error al eliminar item del menu:', error);
     res.status(500).json({
-      error: 'Error al eliminar item del menú',
+      error: 'Error al eliminar item del menu',
       details: error.message
     });
   }
