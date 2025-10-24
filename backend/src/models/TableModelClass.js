@@ -1,7 +1,6 @@
 const pool = require('../config/database');
 
 class Table {
-  // Crear una nueva mesa
   static async create(tableData) {
     const { restaurantId, tableNumber, capacity } = tableData;
 
@@ -20,7 +19,6 @@ class Table {
     }
   }
 
-  // Obtener todas las mesas de un restaurante
   static async findByRestaurantId(restaurantId) {
     const query = `
       SELECT * FROM tables 
@@ -37,7 +35,6 @@ class Table {
     }
   }
 
-  // Obtener mesa por ID
   static async findById(id) {
     const query = 'SELECT * FROM tables WHERE id = $1';
 
@@ -50,7 +47,6 @@ class Table {
     }
   }
 
-  // Actualizar mesa
   static async update(id, tableData) {
     const { tableNumber, capacity, isActive } = tableData;
 
@@ -73,7 +69,6 @@ class Table {
     }
   }
 
-  // Eliminar mesa (soft delete)
   static async delete(id) {
     const query = 'UPDATE tables SET is_active = false WHERE id = $1 RETURNING *';
 
@@ -86,7 +81,6 @@ class Table {
     }
   }
 
-  // Verificar si una mesa tiene reservas futuras
   static async hasFutureReservations(tableId) {
     const query = `
       SELECT COUNT(*) as count
