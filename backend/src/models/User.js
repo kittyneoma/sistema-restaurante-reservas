@@ -2,11 +2,9 @@ const pool = require('../config/database');
 const bcrypt = require('bcrypt');
 
 class User {
-  // crea un nuevo usuario
   static async create(userData) {
     const { email, password, firstName, lastName, phone, role = 'customer' } = userData;
     
-    // hash del password
     const saltRounds = 10;
     const passwordHash = await bcrypt.hash(password, saltRounds);
 
@@ -24,7 +22,6 @@ class User {
     }
   }
 
-  // busca usuario por email
   static async findByEmail(email) {
     const query = 'SELECT * FROM users WHERE email = $1';
     
@@ -36,7 +33,6 @@ class User {
     }
   }
 
-  // busca usuario por ID
   static async findById(id) {
     const query = 'SELECT id, email, first_name, last_name, phone, role, created_at FROM users WHERE id = $1';
     
@@ -48,7 +44,6 @@ class User {
     }
   }
 
-  // verifica contrase
   static async verifyPassword(plainPassword, hashedPassword) {
     return await bcrypt.compare(plainPassword, hashedPassword);
   }
