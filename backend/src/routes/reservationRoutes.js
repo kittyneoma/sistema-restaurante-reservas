@@ -3,13 +3,10 @@ const router = express.Router();
 const reservationController = require('../controllers/reservationController');
 const authMiddleware = require('../middlewares/authMiddleware');
 
-console.log('📍 reservationController:', reservationController);
-console.log('📍 getAvailability:', typeof reservationController.getAvailability);
-
-// Ruta pública - Verificar disponibilidad
+// ruta publica
 router.get('/availability/:restaurantId', reservationController.getAvailability);
 
-// Rutas protegidas (requieren autenticación)
+// rutas protegidas
 router.get('/my/reservations', authMiddleware, reservationController.getMyReservations);
 router.get('/restaurant/:restaurantId', authMiddleware, reservationController.getRestaurantReservations);
 
