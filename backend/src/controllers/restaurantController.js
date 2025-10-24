@@ -1,6 +1,5 @@
 const Restaurant = require('../models/Restaurant');
 
-// crea restaurante
 const createRestaurant = async (req, res) => {
   try {
     const {
@@ -17,14 +16,12 @@ const createRestaurant = async (req, res) => {
       operatingHours
     } = req.body;
 
-    // validaciones
     if (!name || !address || !city || !cuisineType || !phone) {
       return res.status(400).json({
-        error: 'Nombre, dirección, ciudad, tipo de cocina y teléfono son requeridos'
+        error: 'Nombre, direccion, ciudad, tipo de cocina y telefono son requeridos'
       });
     }
 
-    // verifica que el usuario sea restaurant_owner
     if (req.user.role !== 'restaurant_owner') {
       return res.status(403).json({
         error: 'Solo los dueños de restaurantes pueden crear restaurantes'
@@ -62,7 +59,6 @@ const createRestaurant = async (req, res) => {
   }
 };
 
-// obtiene todos los restaurantes
 const getAllRestaurants = async (req, res) => {
   try {
     const { city, cuisineType, priceRange, search } = req.query;
@@ -90,7 +86,6 @@ const getAllRestaurants = async (req, res) => {
   }
 };
 
-// obtiene restaurante por ID
 const getRestaurantById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -114,7 +109,6 @@ const getRestaurantById = async (req, res) => {
   }
 };
 
-// obtiene restaurantes del usuario actual
 const getMyRestaurants = async (req, res) => {
   try {
     const restaurants = await Restaurant.findByUserId(req.user.id);
@@ -133,12 +127,10 @@ const getMyRestaurants = async (req, res) => {
   }
 };
 
-// actualiza restaurante
 const updateRestaurant = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // verifica que el usuario sea el dueño
     const isOwner = await Restaurant.isOwner(id, req.user.id);
     if (!isOwner) {
       return res.status(403).json({
@@ -168,12 +160,10 @@ const updateRestaurant = async (req, res) => {
   }
 };
 
-// elimina restaurante
 const deleteRestaurant = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // verifica que el usuario sea el dueño
     const isOwner = await Restaurant.isOwner(id, req.user.id);
     if (!isOwner) {
       return res.status(403).json({
@@ -203,7 +193,6 @@ const deleteRestaurant = async (req, res) => {
   }
 };
 
-// exporta todas las funciones
 module.exports = {
   createRestaurant,
   getAllRestaurants,
